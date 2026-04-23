@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ILYAN HACHANI // Cybersecurity Architect</title>
+    <title>ILYAN HACHANI // Votre Futur Alternant</title>
     <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
     <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
     <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap)" rel="stylesheet">
@@ -291,7 +291,7 @@
             transition: all 0.4s;
         }
 
-        .portal-card[data-portal="Qui suis - je ?"]::before { background: var(--accent-cyan); box-shadow: 0 0 20px var(--accent-cyan); }
+        .portal-card[data-portal="identity"]::before { background: var(--accent-cyan); box-shadow: 0 0 20px var(--accent-cyan); }
         .portal-card[data-portal="mira"]::before { background: var(--accent-green); box-shadow: 0 0 20px var(--accent-green); }
         .portal-card[data-portal="career"]::before { background: var(--accent-purple); box-shadow: 0 0 20px var(--accent-purple); }
         .portal-card[data-portal="passion"]::before { background: var(--accent-orange); box-shadow: 0 0 20px var(--accent-orange); }
@@ -301,7 +301,7 @@
             border-color: var(--border-glow);
         }
 
-        .portal-card[data-portal="Qui suis - je ?"]:hover { box-shadow: 0 20px 60px rgba(0, 245, 255, 0.15), 0 0 0 1px rgba(0, 245, 255, 0.3); }
+        .portal-card[data-portal="identity"]:hover { box-shadow: 0 20px 60px rgba(0, 245, 255, 0.15), 0 0 0 1px rgba(0, 245, 255, 0.3); }
         .portal-card[data-portal="mira"]:hover { box-shadow: 0 20px 60px rgba(0, 255, 136, 0.15), 0 0 0 1px rgba(0, 255, 136, 0.3); }
         .portal-card[data-portal="career"]:hover { box-shadow: 0 20px 60px rgba(191, 125, 255, 0.15), 0 0 0 1px rgba(191, 125, 255, 0.3); }
         .portal-card[data-portal="passion"]:hover { box-shadow: 0 20px 60px rgba(255, 107, 53, 0.15), 0 0 0 1px rgba(255, 107, 53, 0.3); }
@@ -325,7 +325,7 @@
             font-size: 1.5rem;
         }
 
-        .portal-card[data-portal="Qui suis - je ?"] .portal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
+        .portal-card[data-portal="identity"] .portal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
         .portal-card[data-portal="mira"] .portal-icon { background: var(--accent-green-dim); border: 1px solid rgba(0, 255, 136, 0.3); }
         .portal-card[data-portal="career"] .portal-icon { background: var(--accent-purple-dim); border: 1px solid rgba(191, 125, 255, 0.3); }
         .portal-card[data-portal="passion"] .portal-icon { background: var(--accent-orange-dim); border: 1px solid rgba(255, 107, 53, 0.3); }
@@ -338,7 +338,7 @@
             margin-bottom: 0.5rem;
         }
 
-        .portal-card[data-portal="Qui suis - je ?"] .portal-name { color: var(--accent-cyan); }
+        .portal-card[data-portal="identity"] .portal-name { color: var(--accent-cyan); }
         .portal-card[data-portal="mira"] .portal-name { color: var(--accent-green); }
         .portal-card[data-portal="career"] .portal-name { color: var(--accent-purple); }
         .portal-card[data-portal="passion"] .portal-name { color: var(--accent-orange); }
@@ -745,10 +745,10 @@
         }
 
         /* Modal specific colors */
-        .modal-content[data-portal="Qui suis - je ?"] .modal-header { border-bottom-color: rgba(0, 245, 255, 0.3); }
-        .modal-content[data-portal="Qui suis - je ?"] .modal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
-        .modal-content[data-portal="Qui suis - je ?"] .modal-title { color: var(--accent-cyan); }
-        .modal-content[data-portal="Qui suis - je ?"] .content-label { color: var(--accent-cyan); }
+        .modal-content[data-portal="identity"] .modal-header { border-bottom-color: rgba(0, 245, 255, 0.3); }
+        .modal-content[data-portal="identity"] .modal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
+        .modal-content[data-portal="identity"] .modal-title { color: var(--accent-cyan); }
+        .modal-content[data-portal="identity"] .content-label { color: var(--accent-cyan); }
 
         .modal-content[data-portal="mira"] .modal-header { border-bottom-color: rgba(0, 255, 136, 0.3); }
         .modal-content[data-portal="mira"] .modal-icon { background: var(--accent-green-dim); border: 1px solid rgba(0, 255, 136, 0.3); }
@@ -826,11 +826,11 @@
         </div>
 
         <div class="portals-grid">
-            <!-- Portal 1: Qui suis - je ? -->
-            <div class="portal-card" data-portal="Qui suis - je ?" onclick="openModal('Qui suis - je ?')">
+            <!-- Portal 1: Identity -->
+            <div class="portal-card" data-portal="identity" onclick="openModal('identity')">
                 <div class="portal-index">PORTAL_01</div>
                 <div class="portal-icon">⚡</div>
-                <h3 class="portal-name">Qui suis - je ?</h3>
+                <h3 class="portal-name">IDENTITY</h3>
                 <p class="portal-desc">
                     Profil technique polyvalent. Autonomie totale. Expertise Active Directory, GPO, Windows Server et administration Linux. Capacité d'adaptation rapide.
                 </p>
@@ -897,12 +897,12 @@
     <!-- Modal Overlay -->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
         
-        <!-- Qui suis - je ? Modal -->
-        <div class="modal-content" data-portal="Qui suis - je ?" id="modal-Qui suis - je ?">
+        <!-- Identity Modal -->
+        <div class="modal-content" data-portal="identity" id="modal-identity">
             <div class="modal-header">
                 <div class="modal-title-group">
                     <div class="modal-icon">⚡</div>
-                    <h2 class="modal-title">Qui suis - je ?_CORE</h2>
+                    <h2 class="modal-title">IDENTITY_CORE</h2>
                 </div>
                 <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
             </div>
@@ -1042,7 +1042,7 @@
                     <div class="objective-card">
                         <div class="objective-badge">
                             <span class="pulse"></span>
-                            RECHERCHE ALTERNANCE 3 ANS // Disponible dès Juillet 2026
+                            RECHERCHE UN CONTRAT D'ALTERNANCE DE 3 ANS // Disponible dès Juillet 2026
                         </div>
                     </div>
                 </div>
