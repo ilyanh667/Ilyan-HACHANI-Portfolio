@@ -47,6 +47,7 @@
             line-height: 1.6;
         }
 
+        /* Canvas Background */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -57,6 +58,7 @@
             pointer-events: none;
         }
 
+        /* Grid Overlay */
         .grid-overlay {
             position: fixed;
             top: 0;
@@ -77,6 +79,7 @@
             100% { transform: translate(50px, 50px); }
         }
 
+        /* Hero Section */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -94,8 +97,14 @@
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero-badge {
@@ -110,6 +119,18 @@
             gap: 0.75rem;
         }
 
+        .hero-badge::before,
+        .hero-badge::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan));
+        }
+
+        .hero-badge::after {
+            background: linear-gradient(90deg, var(--accent-cyan), transparent);
+        }
+
         .hero-title {
             font-family: 'Orbitron', sans-serif;
             font-size: clamp(2.5rem, 8vw, 6rem);
@@ -120,7 +141,9 @@
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
             animation: gradientShift 4s ease infinite;
+            text-shadow: 0 0 60px rgba(0, 245, 255, 0.3);
         }
 
         @keyframes gradientShift {
@@ -136,27 +159,104 @@
             margin-bottom: 3rem;
         }
 
+        .hero-subtitle .highlight {
+            color: var(--accent-cyan);
+        }
+
         .enter-btn {
             font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
             padding: 1.25rem 3rem;
             background: transparent;
             border: 2px solid var(--accent-cyan);
             color: var(--accent-cyan);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
             transition: all 0.4s var(--transition-smooth);
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
 
         .enter-btn:hover {
             background: var(--accent-cyan-dim);
-            box-shadow: 0 0 40px rgba(0, 245, 255, 0.4);
+            box-shadow: 0 0 40px rgba(0, 245, 255, 0.4), inset 0 0 40px rgba(0, 245, 255, 0.1);
             transform: translateY(-2px);
         }
 
+        .enter-btn:hover::before {
+            left: 100%;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-indicator span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
+        }
+
+        .scroll-indicator .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid var(--text-muted);
+            border-bottom: 2px solid var(--text-muted);
+            transform: rotate(45deg);
+        }
+
+        /* Portals Section */
         .portals-section {
             position: relative;
             z-index: 10;
             padding: 6rem 2rem;
             min-height: 100vh;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
         }
 
         .portals-grid {
@@ -170,66 +270,519 @@
         .portal-card {
             background: linear-gradient(145deg, var(--bg-surface), var(--bg-primary));
             border: 1px solid var(--border-color);
+            border-radius: 8px;
             padding: 2rem;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
             transition: all 0.5s var(--transition-smooth);
-            border-radius: 8px;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .portal-card:hover { transform: translateY(-8px); border-color: var(--accent-cyan); }
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            transition: all 0.4s;
+        }
 
+        .portal-card[data-portal="Qui suis - je ?"]::before { background: var(--accent-cyan); box-shadow: 0 0 20px var(--accent-cyan); }
+        .portal-card[data-portal="mira"]::before { background: var(--accent-green); box-shadow: 0 0 20px var(--accent-green); }
+        .portal-card[data-portal="career"]::before { background: var(--accent-purple); box-shadow: 0 0 20px var(--accent-purple); }
+        .portal-card[data-portal="passion"]::before { background: var(--accent-orange); box-shadow: 0 0 20px var(--accent-orange); }
+
+        .portal-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-glow);
+        }
+
+        .portal-card[data-portal="Qui suis - je ?"]:hover { box-shadow: 0 20px 60px rgba(0, 245, 255, 0.15), 0 0 0 1px rgba(0, 245, 255, 0.3); }
+        .portal-card[data-portal="mira"]:hover { box-shadow: 0 20px 60px rgba(0, 255, 136, 0.15), 0 0 0 1px rgba(0, 255, 136, 0.3); }
+        .portal-card[data-portal="career"]:hover { box-shadow: 0 20px 60px rgba(191, 125, 255, 0.15), 0 0 0 1px rgba(191, 125, 255, 0.3); }
+        .portal-card[data-portal="passion"]:hover { box-shadow: 0 20px 60px rgba(255, 107, 53, 0.15), 0 0 0 1px rgba(255, 107, 53, 0.3); }
+
+        .portal-index {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .portal-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .portal-card[data-portal="Qui suis - je ?"] .portal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
+        .portal-card[data-portal="mira"] .portal-icon { background: var(--accent-green-dim); border: 1px solid rgba(0, 255, 136, 0.3); }
+        .portal-card[data-portal="career"] .portal-icon { background: var(--accent-purple-dim); border: 1px solid rgba(191, 125, 255, 0.3); }
+        .portal-card[data-portal="passion"] .portal-icon { background: var(--accent-orange-dim); border: 1px solid rgba(255, 107, 53, 0.3); }
+
+        .portal-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .portal-card[data-portal="Qui suis - je ?"] .portal-name { color: var(--accent-cyan); }
+        .portal-card[data-portal="mira"] .portal-name { color: var(--accent-green); }
+        .portal-card[data-portal="career"] .portal-name { color: var(--accent-purple); }
+        .portal-card[data-portal="passion"] .portal-name { color: var(--accent-orange); }
+
+        .portal-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        .portal-action {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .portal-card:hover .portal-action {
+            color: var(--text-secondary);
+        }
+
+        .portal-action .arrow {
+            transition: transform 0.3s;
+        }
+
+        .portal-card:hover .portal-action .arrow {
+            transform: translateX(5px);
+        }
+
+        /* Modal Overlay */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(5, 5, 8, 0.95);
             z-index: 1000;
             display: none;
             opacity: 0;
-            transition: opacity 0.4s;
+            transition: opacity 0.4s var(--transition-smooth);
+            overflow-y: auto;
             backdrop-filter: blur(10px);
         }
 
-        .modal-overlay.active { display: block; opacity: 1; }
+        .modal-overlay.active {
+            display: block;
+            opacity: 1;
+        }
 
         .modal-content {
             position: relative;
-            width: 90%; max-width: 1000px;
+            width: 90%;
+            max-width: 1000px;
             margin: 3rem auto;
             background: var(--bg-surface);
             border: 1px solid var(--border-color);
             border-radius: 12px;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.5s var(--transition-smooth) 0.1s;
             overflow: hidden;
             display: none;
         }
 
-        .modal-header { padding: 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .modal-body { padding: 2.5rem; max-height: 70vh; overflow-y: auto; }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-header {
+            padding: 2rem 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .modal-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .close-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .content-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .content-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .content-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
 
         .skill-chip {
-            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             padding: 0.5rem 1rem;
-            margin: 0.3rem;
             background: var(--bg-elevated);
             border: 1px solid var(--border-color);
             border-radius: 4px;
-            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
         }
 
-        .showcase-image { width: 100%; height: auto; border-radius: 8px; margin-bottom: 1rem; }
-        
-        .cv-button {
-            display: inline-block;
+        .skill-chip:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: var(--accent-cyan-dim);
+        }
+
+        .project-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .showcase-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .showcase-card:hover {
+            border-color: var(--accent-green);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.1);
+        }
+
+        .showcase-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            filter: brightness(0.9);
+            transition: filter 0.3s;
+        }
+
+        .showcase-card:hover .showcase-image {
+            filter: brightness(1);
+        }
+
+        .showcase-info {
+            padding: 1.25rem;
+        }
+
+        .showcase-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .showcase-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
             margin-top: 1rem;
-            padding: 0.8rem 1.5rem;
+        }
+
+        .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 3px;
+            color: var(--accent-green);
+        }
+
+        .objective-card {
+            background: linear-gradient(135deg, var(--accent-purple-dim), transparent);
+            border: 1px solid rgba(191, 125, 255, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .objective-badge {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .objective-badge .pulse {
+            width: 8px;
+            height: 8px;
             background: var(--accent-purple);
-            color: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(191, 125, 255, 0.5); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(191, 125, 255, 0); }
+        }
+
+        .roles-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .role-item {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 0.75rem 1rem;
+            background: var(--bg-elevated);
+            border-left: 2px solid var(--accent-purple);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .passion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .passion-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .passion-item:hover {
+            border-color: var(--accent-orange);
+        }
+
+        .passion-icon {
+            font-size: 1.5rem;
+            min-width: 40px;
+        }
+
+        .passion-content h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-orange);
+            margin-bottom: 0.25rem;
+        }
+
+        .passion-content p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-primary));
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 10;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-contact {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
             text-decoration: none;
-            border-radius: 4px;
+            transition: opacity 0.3s;
+        }
+
+        .footer-contact:hover {
+            opacity: 0.7;
+        }
+
+        .footer-copy {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+
+        /* Modal specific colors */
+        .modal-content[data-portal="Qui suis - je ?"] .modal-header { border-bottom-color: rgba(0, 245, 255, 0.3); }
+        .modal-content[data-portal="Qui suis - je ?"] .modal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
+        .modal-content[data-portal="Qui suis - je ?"] .modal-title { color: var(--accent-cyan); }
+        .modal-content[data-portal="Qui suis - je ?"] .content-label { color: var(--accent-cyan); }
+
+        .modal-content[data-portal="mira"] .modal-header { border-bottom-color: rgba(0, 255, 136, 0.3); }
+        .modal-content[data-portal="mira"] .modal-icon { background: var(--accent-green-dim); border: 1px solid rgba(0, 255, 136, 0.3); }
+        .modal-content[data-portal="mira"] .modal-title { color: var(--accent-green); }
+        .modal-content[data-portal="mira"] .content-label { color: var(--accent-green); }
+
+        .modal-content[data-portal="career"] .modal-header { border-bottom-color: rgba(191, 125, 255, 0.3); }
+        .modal-content[data-portal="career"] .modal-icon { background: var(--accent-purple-dim); border: 1px solid rgba(191, 125, 255, 0.3); }
+        .modal-content[data-portal="career"] .modal-title { color: var(--accent-purple); }
+        .modal-content[data-portal="career"] .content-label { color: var(--accent-purple); }
+
+        .modal-content[data-portal="passion"] .modal-header { border-bottom-color: rgba(255, 107, 53, 0.3); }
+        .modal-content[data-portal="passion"] .modal-icon { background: var(--accent-orange-dim); border: 1px solid rgba(255, 107, 53, 0.3); }
+        .modal-content[data-portal="passion"] .modal-title { color: var(--accent-orange); }
+        .modal-content[data-portal="passion"] .content-label { color: var(--accent-orange); }
+
+        /* CV Button Styles */
+        .cv-btn-container { margin-top: 2rem; }
+        .cv-download-btn {
             font-family: 'Orbitron', sans-serif;
             font-size: 0.8rem;
+            color: var(--accent-purple);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--accent-purple);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .cv-download-btn:hover {
+            background: var(--accent-purple-dim);
+            box-shadow: 0 0 20px var(--accent-purple-dim);
         }
 
-        .footer { padding: 3rem; text-align: center; border-top: 1px solid var(--border-color); z-index: 10; position: relative; }
+        @media (max-width: 768px) {
+            .modal-content { width: 95%; margin: 1.5rem auto; }
+            .modal-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .modal-body { padding: 1.5rem; }
+            .project-showcase { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -240,125 +793,207 @@
         <div class="hero-content">
             <div class="hero-badge">SYSTÈME INITIALISÉ</div>
             <h1 class="hero-title">ILYAN HACHANI</h1>
-            <p class="hero-subtitle"><span style="color: var(--accent-cyan)">CYBERSECURITY ARCHITECT</span> & SYSTEM ADMIN</p>
-            <button class="enter-btn" onclick="document.getElementById('portals').scrollIntoView({behavior: 'smooth'})">ENTER_SYSTEM</button>
+            <p class="hero-subtitle">
+                <span class="highlight">CYBERSECURITY ARCHITECT</span> & SYSTEM ADMIN
+            </p>
+            <button class="enter-btn" onclick="document.getElementById('portals').scrollIntoView({behavior: 'smooth'})">
+                ENTER_SYSTEM
+            </button>
+        </div>
+        <div class="scroll-indicator">
+            <span>SCROLL</span>
+            <div class="arrow"></div>
         </div>
     </section>
 
     <section class="portals-section" id="portals">
+        <div class="section-header">
+            <div class="section-tag">// SELECT ACCESS PORTAL</div>
+            <h2 class="section-title">NAVIGATION MATRIX</h2>
+        </div>
+
         <div class="portals-grid">
-            <div class="portal-card" onclick="openModal('qui-suis-je')">
-                <h3>PORTAL_01: PROFIL</h3>
-                <p>Expertise Active Directory, Windows Server et administration Linux.</p>
+            <div class="portal-card" data-portal="Qui suis - je ?" onclick="openModal('Qui suis - je ?')">
+                <div class="portal-index">PORTAL_01</div>
+                <div class="portal-icon">⚡</div>
+                <h3 class="portal-name">Qui suis - je ?</h3>
+                <p class="portal-desc">Profil technique polyvalent. Expertise Active Directory, GPO, Windows Server et administration Linux.</p>
+                <div class="portal-action"><span>ACCESS_DATA</span><span class="arrow">→</span></div>
             </div>
-            <div class="portal-card" onclick="openModal('mira')">
-                <h3>PORTAL_02: MIRA_PROJECT</h3>
-                <p>Système d'audit réseau Full-Stack et monitoring temps réel.</p>
+
+            <div class="portal-card" data-portal="mira" onclick="openModal('mira')">
+                <div class="portal-index">PORTAL_02</div>
+                <div class="portal-icon">🛡️</div>
+                <h3 class="portal-name">MIRA_PROJECT</h3>
+                <p class="portal-desc">Système d'audit réseau Full-Stack. Extraction API FreeboxOS, Whitelist sécurisée, Bot Telegram.</p>
+                <div class="portal-action"><span>VIEW_PROJECT</span><span class="arrow">→</span></div>
             </div>
-            <div class="portal-card" onclick="openModal('career')">
-                <h3>PORTAL_03: CAREER_PATH</h3>
-                <p>Recherche alternance 3 ans dès Juillet 2026.</p>
+
+            <div class="portal-card" data-portal="career" onclick="openModal('career')">
+                <div class="portal-index">PORTAL_03</div>
+                <div class="portal-icon">🚀</div>
+                <h3 class="portal-name">CAREER_PATH</h3>
+                <p class="portal-desc">Recherche alternance 3 ans dès juillet 2026. Profil polyvalent : SOC, Audit, Admin.</p>
+                <div class="portal-action"><span>EXPLORE_VISION</span><span class="arrow">→</span></div>
+            </div>
+
+            <div class="portal-card" data-portal="passion" onclick="openModal('passion')">
+                <div class="portal-index">PORTAL_04</div>
+                <div class="portal-icon">🔥</div>
+                <h3 class="portal-name">PASSION_LOGS</h3>
+                <p class="portal-desc">Veille IA constante. Discipline MMA pour la résilience. Fan Liverpool FC et Florian Wirtz.</p>
+                <div class="portal-action"><span>READ_LOGS</span><span class="arrow">→</span></div>
             </div>
         </div>
     </section>
 
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-name">ILYAN HACHANI</div>
+            <div class="footer-tagline">DÉFENSEUR PROACTIF // GUARDIA SCHOOL</div>
+            <a href="mailto:hachani.ilyan5@gmail.com" class="footer-contact">hachani.ilyan5@gmail.com</a>
+            <p class="footer-copy">© 2026 // SYSTEM_ACTIVE</p>
+        </div>
+    </footer>
+
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-content" id="modal-qui-suis-je">
+        
+        <div class="modal-content" data-portal="Qui suis - je ?" id="modal-Qui suis - je ?">
             <div class="modal-header">
-                <h2>Qui suis-je ?_CORE</h2>
-                <button onclick="closeModal(event, true)">CLOSE</button>
-            </div>
-            <div class="modal-body">
-                <p>Étudiant à la <strong>Guardia Cybersecurity School</strong>, je suis un défenseur proactif. Mon autonomie et ma persévérance me permettent de développer mes propres solutions.</p>
-                <div style="margin-top:2rem">
-                    <span class="skill-chip">Active Directory</span>
-                    <span class="skill-chip">Linux Administration</span>
-                    <span class="skill-chip">Python Scripting</span>
+                <div class="modal-title-group">
+                    <div class="modal-icon">⚡</div>
+                    <h2 class="modal-title">Qui suis - je ?_CORE</h2>
                 </div>
-                <img src="linux-terminal.png" alt="Environnement Linux" class="showcase-image" onerror="this.style.display='none'">
+                <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
+            </div>
+            <div class="modal-body">
+                <div class="content-section">
+                    <div class="content-label">// PROFIL</div>
+                    <p class="content-text">Étudiant à la Guardia Cybersecurity School, je suis un défenseur proactif qui ne subit pas la technologie mais la contrôle.</p>
+                </div>
+
+                <div class="content-section">
+                    <div class="content-label">// EXPERTISE TECHNIQUE</div>
+                    <div class="skills-grid">
+                        <span class="skill-chip">Active Directory</span>
+                        <span class="skill-chip">Linux Admin</span>
+                        <span class="skill-chip">Python</span>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="content-label">// ENVIRONNEMENT LINUX</div>
+                    <div class="showcase-card">
+                        <img src="linux-terminal.png" alt="Terminal Linux" class="showcase-image" onerror="this.outerHTML='<div class=\'image-placeholder\'><span class=\'icon\'>🖥️</span><span>LINUX_TERMINAL.png</span></div>'">
+                        <div class="showcase-info">
+                            <div class="showcase-title">Terminal Environment</div>
+                            <p class="showcase-desc">Maîtrise complète de l'environnement Linux.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="modal-content" id="modal-mira">
+        <div class="modal-content" data-portal="mira" id="modal-mira">
             <div class="modal-header">
-                <h2>MIRA_PROJECT</h2>
-                <button onclick="closeModal(event, true)">CLOSE</button>
+                <div class="modal-title-group"><div class="modal-icon">🛡️</div><h2 class="modal-title">MIRA_PROJECT</h2></div>
+                <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
             </div>
             <div class="modal-body">
-                <p>Outil d'audit et de surveillance réseau en temps réel avec alertes Telegram.</p>
-                <img src="mira-dashboard.png" alt="MIRA Dashboard" class="showcase-image">
-                <img src="telegram-alerts.png" alt="Alertes Telegram" class="showcase-image">
+                <div class="project-showcase">
+                    <div class="showcase-card">
+                        <img src="mira-dashboard.png" alt="MIRA Dashboard" class="showcase-image" onerror="this.outerHTML='<div class=\'image-placeholder\'><span>MIRA_DASHBOARD.png</span></div>'">
+                        <div class="showcase-info"><div class="showcase-title">Dashboard v2.0</div></div>
+                    </div>
+                    <div class="showcase-card">
+                        <img src="telegram-alerts.png" alt="Telegram Alerts" class="showcase-image" onerror="this.outerHTML='<div class=\'image-placeholder\'><span>TELEGRAM_ALERTS.png</span></div>'">
+                        <div class="showcase-info"><div class="showcase-title">Alerting System</div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="modal-content" id="modal-career">
+        <div class="modal-content" data-portal="career" id="modal-career">
             <div class="modal-header">
-                <h2>CAREER_PATH</h2>
-                <button onclick="closeModal(event, true)">CLOSE</button>
+                <div class="modal-title-group"><div class="modal-icon">🚀</div><h2 class="modal-title">CAREER_PATH</h2></div>
+                <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
             </div>
             <div class="modal-body">
-                <h3>// VISION FUTURE</h3>
-                <p>Mon objectif est de bâtir un socle technique robuste et polyvalent au sein d'une structure innovante. Je souhaite devenir un profil complet, capable d'intervenir sur toute la chaîne de défense et d'évoluer de concert avec les défis stratégiques de l'entreprise sur le long terme.</p>
-                <a href="cv-ilyan-hachani.pdf" class="cv-button" target="_blank">TÉLÉCHARGER_MON_CV</a>
+                <div class="objective-card"><div class="objective-badge"><span class="pulse"></span>ALTERNANCE 3 ANS // Disponible dès Juillet 2026</div></div>
+                <div class="content-section">
+                    <div class="content-label">// VISION FUTURE</div>
+                    <p class="content-text">Mon objectif est de bâtir un socle technique robuste et polyvalent au sein d'une structure innovante.</p>
+                </div>
+                <div class="cv-btn-container">
+                    <a href="cv-ilyan-hachani.pdf" class="cv-download-btn" target="_blank">TÉLÉCHARGER_MON_CV.PDF</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-content" data-portal="passion" id="modal-passion">
+            <div class="modal-header">
+                <div class="modal-title-group"><div class="modal-icon">🔥</div><h2 class="modal-title">PASSION_LOGS</h2></div>
+                <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
+            </div>
+            <div class="modal-body">
+                <div class="passion-grid">
+                    <div class="passion-item"><div class="passion-content"><h4>MMA</h4><p>Discipline physique et mentale.</p></div></div>
+                    <div class="passion-item"><div class="passion-content"><h4>Football</h4><p>Liverpool FC & Florian Wirtz.</p></div></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer class="footer">
-        <p>ILYAN HACHANI // hachani.ilyan5@gmail.com</p>
-        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 1rem;">© 2026 // SYSTEM_ACTIVE</p>
-    </footer>
-
     <script>
+        // Particle Canvas Animation
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        function create() {
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function createParticles() {
             particles = [];
-            for (let i = 0; i < 100; i++) {
+            const count = Math.floor((canvas.width * canvas.height) / 15000);
+            for (let i = 0; i < count; i++) {
                 particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+                    radius: Math.random() * 1.5 + 0.5, opacity: Math.random() * 0.5 + 0.1
                 });
             }
         }
-
-        function animate() {
+        function drawParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
+            particles.forEach((p, i) => {
                 p.x += p.vx; p.y += p.vy;
-                if(p.x<0 || p.x>canvas.width) p.vx*=-1;
-                if(p.y<0 || p.y>canvas.height) p.vy*=-1;
-                ctx.fillStyle = 'rgba(0, 245, 255, 0.5)';
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 245, 255, ${p.opacity})`; ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(drawParticles);
         }
+        window.addEventListener('resize', () => { resizeCanvas(); createParticles(); });
+        resizeCanvas(); createParticles(); drawParticles();
 
-        window.addEventListener('resize', resize);
-        resize(); create(); animate();
-
-        function openModal(id) {
+        // Modal Functions
+        let currentModal = null;
+        function openModal(portalId) {
             const overlay = document.getElementById('modal-overlay');
-            const target = document.getElementById('modal-' + id);
-            overlay.classList.add('active');
-            document.querySelectorAll('.modal-content').forEach(m => m.style.display = 'none');
-            target.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            const modals = document.querySelectorAll('.modal-content');
+            modals.forEach(m => m.style.display = 'none');
+            const target = document.getElementById(`modal-${portalId}`);
+            if (target) {
+                target.style.display = 'block';
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                currentModal = portalId;
+            }
         }
-
-        function closeModal(e, force = false) {
-            if (force || e.target.id === 'modal-overlay') {
+        function closeModal(event, forceClose = false) {
+            if (forceClose || event.target.id === 'modal-overlay') {
                 document.getElementById('modal-overlay').classList.remove('active');
                 document.body.style.overflow = '';
+                currentModal = null;
             }
         }
     </script>
