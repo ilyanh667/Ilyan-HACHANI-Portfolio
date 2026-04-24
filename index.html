@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILYAN HACHANI // Votre Futur Alternant</title>
-    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
-    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap)" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #050508;
@@ -29,1267 +29,243 @@
             --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .grid-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; z-index: 1; pointer-events: none; animation: gridMove 20s linear infinite; }
+        @keyframes gridMove { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        /* Hero */
+        .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 2rem; }
+        .hero-content { text-align: center; animation: fadeInUp 1s var(--transition-smooth); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent-cyan); letter-spacing: 0.3em; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+        .hero-badge::before, .hero-badge::after { content: ''; width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-cyan)); }
+        .hero-badge::after { background: linear-gradient(90deg, var(--accent-cyan), transparent); }
+        .hero-title { font-family: 'Orbitron', sans-serif; font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; letter-spacing: 0.1em; margin-bottom: 1rem; background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 50%, var(--text-primary) 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradientShift 4s ease infinite; text-shadow: 0 0 60px rgba(0, 245, 255, 0.3); }
+        @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .hero-subtitle { font-family: 'JetBrains Mono', monospace; font-size: clamp(0.8rem, 2vw, 1.1rem); color: var(--text-secondary); letter-spacing: 0.15em; margin-bottom: 3rem; }
+        .hero-subtitle .highlight { color: var(--accent-cyan); }
+        .enter-btn { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.2em; padding: 1.25rem 3rem; background: transparent; border: 2px solid var(--accent-cyan); color: var(--accent-cyan); cursor: pointer; position: relative; overflow: hidden; transition: all 0.4s var(--transition-smooth); }
+        .enter-btn:hover { background: var(--accent-cyan-dim); box-shadow: 0 0 40px rgba(0, 245, 255, 0.4); transform: translateY(-2px); }
+        .scroll-indicator { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+        .scroll-indicator .arrow { width: 20px; height: 20px; border-right: 2px solid var(--text-muted); border-bottom: 2px solid var(--text-muted); transform: rotate(45deg); }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Canvas Background */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* Grid Overlay */
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 1;
-            pointer-events: none;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            padding: 2rem;
-        }
-
-        .hero-content {
-            text-align: center;
-            animation: fadeInUp 1s var(--transition-smooth);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-badge {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--accent-cyan);
-            letter-spacing: 0.3em;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-        }
-
-        .hero-badge::before,
-        .hero-badge::after {
-            content: '';
-            width: 40px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan));
-        }
-
-        .hero-badge::after {
-            background: linear-gradient(90deg, var(--accent-cyan), transparent);
-        }
-
-        .hero-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 50%, var(--text-primary) 100%);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 4s ease infinite;
-            text-shadow: 0 0 60px rgba(0, 245, 255, 0.3);
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hero-subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(0.8rem, 2vw, 1.1rem);
-            color: var(--text-secondary);
-            letter-spacing: 0.15em;
-            margin-bottom: 3rem;
-        }
-
-        .hero-subtitle .highlight {
-            color: var(--accent-cyan);
-        }
-
-        .enter-btn {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            padding: 1.25rem 3rem;
-            background: transparent;
-            border: 2px solid var(--accent-cyan);
-            color: var(--accent-cyan);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s var(--transition-smooth);
-        }
-
-        .enter-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .enter-btn:hover {
-            background: var(--accent-cyan-dim);
-            box-shadow: 0 0 40px rgba(0, 245, 255, 0.4), inset 0 0 40px rgba(0, 245, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .enter-btn:hover::before {
-            left: 100%;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
-        }
-
-        .scroll-indicator span {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            letter-spacing: 0.2em;
-        }
-
-        .scroll-indicator .arrow {
-            width: 20px;
-            height: 20px;
-            border-right: 2px solid var(--text-muted);
-            border-bottom: 2px solid var(--text-muted);
-            transform: rotate(45deg);
-        }
-
-        /* Portal Section */
-        .portals-section {
-            position: relative;
-            z-index: 10;
-            padding: 6rem 2rem;
-            min-height: 100vh;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--accent-cyan);
-            letter-spacing: 0.3em;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 700;
-            letter-spacing: 0.1em;
-        }
-
-        .portals-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .portal-card {
-            background: linear-gradient(145deg, var(--bg-surface), var(--bg-primary));
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2rem;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s var(--transition-smooth);
-            min-height: 320px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .portal-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            transition: all 0.4s;
-        }
-
+        /* Portals Grid */
+        .portals-section { position: relative; z-index: 10; padding: 6rem 2rem; min-height: 100vh; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent-cyan); letter-spacing: 0.3em; margin-bottom: 1rem; }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 700; }
+        .portals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1400px; margin: 0 auto; }
+        .portal-card { background: linear-gradient(145deg, var(--bg-surface), var(--bg-primary)); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; cursor: pointer; position: relative; overflow: hidden; transition: all 0.5s var(--transition-smooth); min-height: 320px; display: flex; flex-direction: column; }
+        .portal-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
         .portal-card[data-portal="identity"]::before { background: var(--accent-cyan); box-shadow: 0 0 20px var(--accent-cyan); }
         .portal-card[data-portal="mira"]::before { background: var(--accent-green); box-shadow: 0 0 20px var(--accent-green); }
         .portal-card[data-portal="career"]::before { background: var(--accent-purple); box-shadow: 0 0 20px var(--accent-purple); }
         .portal-card[data-portal="passion"]::before { background: var(--accent-orange); box-shadow: 0 0 20px var(--accent-orange); }
-
-        .portal-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--border-glow);
-        }
-
-        .portal-card[data-portal="identity"]:hover { box-shadow: 0 20px 60px rgba(0, 245, 255, 0.15), 0 0 0 1px rgba(0, 245, 255, 0.3); }
-        .portal-card[data-portal="mira"]:hover { box-shadow: 0 20px 60px rgba(0, 255, 136, 0.15), 0 0 0 1px rgba(0, 255, 136, 0.3); }
-        .portal-card[data-portal="career"]:hover { box-shadow: 0 20px 60px rgba(191, 125, 255, 0.15), 0 0 0 1px rgba(191, 125, 255, 0.3); }
-        .portal-card[data-portal="passion"]:hover { box-shadow: 0 20px 60px rgba(255, 107, 53, 0.15), 0 0 0 1px rgba(255, 107, 53, 0.3); }
-
-        .portal-index {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-        }
-
-        .portal-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
+        .portal-card:hover { transform: translateY(-8px); border-color: var(--border-glow); }
+        .portal-icon { width: 50px; height: 50px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem; }
         .portal-card[data-portal="identity"] .portal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
         .portal-card[data-portal="mira"] .portal-icon { background: var(--accent-green-dim); border: 1px solid rgba(0, 255, 136, 0.3); }
         .portal-card[data-portal="career"] .portal-icon { background: var(--accent-purple-dim); border: 1px solid rgba(191, 125, 255, 0.3); }
         .portal-card[data-portal="passion"] .portal-icon { background: var(--accent-orange-dim); border: 1px solid rgba(255, 107, 53, 0.3); }
-
-        .portal-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-        }
-
+        .portal-name { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
         .portal-card[data-portal="identity"] .portal-name { color: var(--accent-cyan); }
         .portal-card[data-portal="mira"] .portal-name { color: var(--accent-green); }
         .portal-card[data-portal="career"] .portal-name { color: var(--accent-purple); }
         .portal-card[data-portal="passion"] .portal-name { color: var(--accent-orange); }
+        .portal-desc { font-size: 0.85rem; color: var(--text-secondary); flex-grow: 1; }
+        .portal-action { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
 
-        .portal-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            flex-grow: 1;
-        }
-
-        .portal-action {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            letter-spacing: 0.15em;
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .portal-card:hover .portal-action {
-            color: var(--text-secondary);
-        }
-
-        .portal-action .arrow {
-            transition: transform 0.3s;
-        }
-
-        .portal-card:hover .portal-action .arrow {
-            transform: translateX(5px);
-        }
-
-        /* Modal Overlay */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 5, 8, 0.95);
-            z-index: 1000;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.4s var(--transition-smooth);
-            overflow-y: auto;
-            backdrop-filter: blur(10px);
-        }
-
-        .modal-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 1000px;
-            margin: 3rem auto;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            transform: translateY(30px);
-            opacity: 0;
-            transition: all 0.5s var(--transition-smooth) 0.1s;
-            overflow: hidden;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .modal-header {
-            padding: 2rem 2.5rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title-group {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .modal-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-        }
-
-        .modal-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-        }
-
-        .close-btn {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            padding: 0.75rem 1.5rem;
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 4px;
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--text-secondary);
-            color: var(--text-primary);
-        }
-
-        .modal-body {
-            padding: 2.5rem;
-        }
-
-        .content-section {
-            margin-bottom: 2.5rem;
-        }
-
-        .content-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .content-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .content-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-color);
-        }
-
-        .content-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-
-        .skills-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-        }
-
-        .skill-chip {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-        }
-
-        .skill-chip:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-            background: var(--accent-cyan-dim);
-        }
-
-        .project-showcase {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .showcase-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .showcase-card:hover {
-            border-color: var(--accent-green);
-            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.1);
-        }
-
-        .showcase-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-bottom: 1px solid var(--border-color);
-            filter: brightness(0.9);
-            transition: filter 0.3s;
-        }
-
-        .showcase-card:hover .showcase-image {
-            filter: brightness(1);
-        }
-
-        .showcase-info {
-            padding: 1.25rem;
-        }
-
-        .showcase-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .showcase-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            margin-top: 1rem;
-        }
-
-        .tech-tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            padding: 0.3rem 0.6rem;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 3px;
-            color: var(--accent-green);
-        }
-
-        .objective-card {
-            background: linear-gradient(135deg, var(--accent-purple-dim), transparent);
-            border: 1px solid rgba(191, 125, 255, 0.3);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .objective-badge {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--accent-purple);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .objective-badge .pulse {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-purple);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(191, 125, 255, 0.5); }
-            50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(191, 125, 255, 0); }
-        }
-
-        .roles-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 0.75rem;
-        }
-
-        .role-item {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            padding: 0.75rem 1rem;
-            background: var(--bg-elevated);
-            border-left: 2px solid var(--accent-purple);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .passion-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-        }
-
-        .passion-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1.25rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .passion-item:hover {
-            border-color: var(--accent-orange);
-        }
-
-        .passion-icon {
-            font-size: 1.5rem;
-            min-width: 40px;
-        }
-
-        .passion-content h4 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent-orange);
-            margin-bottom: 0.25rem;
-        }
-
-        .passion-content p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        /* Image placeholders */
-        .image-placeholder {
-            width: 100%;
-            height: 180px;
-            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-primary));
-            border: 1px dashed var(--border-color);
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-        }
-
-        .image-placeholder .icon {
-            font-size: 2rem;
-            opacity: 0.5;
-        }
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 5, 8, 0.95); z-index: 1000; display: none; opacity: 0; transition: opacity 0.4s; overflow-y: auto; backdrop-filter: blur(10px); }
+        .modal-overlay.active { display: block; opacity: 1; }
+        .modal-content { position: relative; width: 90%; max-width: 1000px; margin: 3rem auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 12px; transform: translateY(30px); opacity: 0; transition: all 0.5s; overflow: hidden; }
+        .modal-overlay.active .modal-content { transform: translateY(0); opacity: 1; }
+        .modal-header { padding: 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title-group { display: flex; align-items: center; gap: 1rem; }
+        .modal-title { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; }
+        .close-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.75rem 1.5rem; background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); cursor: pointer; border-radius: 4px; }
+        .modal-body { padding: 2.5rem; }
+        .content-section { margin-bottom: 2.5rem; }
+        .content-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+        .content-label::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+        .content-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .skill-chip { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.5rem 1rem; background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-secondary); }
+        .showcase-card { background: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+        .showcase-image { width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid var(--border-color); }
+        .showcase-info { padding: 1.25rem; }
+        .tech-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; padding: 0.3rem 0.6rem; background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3); color: var(--accent-green); margin-right: 5px; }
+        .objective-card { background: linear-gradient(135deg, var(--accent-purple-dim), transparent); border: 1px solid rgba(191, 125, 255, 0.3); border-radius: 8px; padding: 1.5rem; }
+        .role-item { padding: 0.75rem; background: var(--bg-elevated); border-left: 2px solid var(--accent-purple); margin-bottom: 5px; font-size: 0.85rem; }
+        .passion-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .passion-item { background: var(--bg-elevated); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color); }
 
         /* Footer */
-        .footer {
-            position: relative;
-            z-index: 10;
-            padding: 3rem 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .footer-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-tagline {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-contact {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--accent-cyan);
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-
-        .footer-contact:hover {
-            opacity: 0.7;
-        }
-
-        .footer-copy {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 2rem;
-        }
-
-        /* Modal specific colors */
-        .modal-content[data-portal="identity"] .modal-header { border-bottom-color: rgba(0, 245, 255, 0.3); }
-        .modal-content[data-portal="identity"] .modal-icon { background: var(--accent-cyan-dim); border: 1px solid rgba(0, 245, 255, 0.3); }
-        .modal-content[data-portal="identity"] .modal-title { color: var(--accent-cyan); }
-        .modal-content[data-portal="identity"] .content-label { color: var(--accent-cyan); }
-
-        .modal-content[data-portal="mira"] .modal-header { border-bottom-color: rgba(0, 255, 136, 0.3); }
-        .modal-content[data-portal="mira"] .modal-icon { background: var(--accent-green-dim); border: 1px solid rgba(0, 255, 136, 0.3); }
-        .modal-content[data-portal="mira"] .modal-title { color: var(--accent-green); }
-        .modal-content[data-portal="mira"] .content-label { color: var(--accent-green); }
-
-        .modal-content[data-portal="career"] .modal-header { border-bottom-color: rgba(191, 125, 255, 0.3); }
-        .modal-content[data-portal="career"] .modal-icon { background: var(--accent-purple-dim); border: 1px solid rgba(191, 125, 255, 0.3); }
-        .modal-content[data-portal="career"] .modal-title { color: var(--accent-purple); }
-        .modal-content[data-portal="career"] .content-label { color: var(--accent-purple); }
-
-        .modal-content[data-portal="passion"] .modal-header { border-bottom-color: rgba(255, 107, 53, 0.3); }
-        .modal-content[data-portal="passion"] .modal-icon { background: var(--accent-orange-dim); border: 1px solid rgba(255, 107, 53, 0.3); }
-        .modal-content[data-portal="passion"] .modal-title { color: var(--accent-orange); }
-        .modal-content[data-portal="passion"] .content-label { color: var(--accent-orange); }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 1.5rem;
-            }
-
-            .portals-section {
-                padding: 4rem 1rem;
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 1.5rem auto;
-            }
-
-            .modal-header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
-            .modal-body {
-                padding: 1.5rem;
-            }
-
-            .project-showcase {
-                grid-template-columns: 1fr;
-            }
-        }
+        .footer { position: relative; z-index: 10; padding: 3rem 2rem; text-align: center; border-top: 1px solid var(--border-color); }
+        .footer-row { margin-bottom: 10px; }
+        .footer-name { font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--text-primary); }
+        .footer-link { color: var(--accent-cyan); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+        .footer-divider, .footer-dot { color: var(--text-muted); margin: 0 10px; }
     </style>
 </head>
 <body>
     <canvas id="particle-canvas"></canvas>
     <div class="grid-overlay"></div>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <div class="hero-badge">SYSTÈME INITIALISÉ</div>
             <h1 class="hero-title">ILYAN HACHANI</h1>
-            <p class="hero-subtitle">
-                <span class="highlight">CYBERSECURITY ARCHITECT</span> & SYSTEM ADMIN
-            </p>
-            <button class="enter-btn" onclick="document.getElementById('portals').scrollIntoView({behavior: 'smooth'})">
-                ENTER_SYSTEM
-            </button>
+            <p class="hero-subtitle"><span class="highlight">CYBERSECURITY ARCHITECT</span> & SYSTEM ADMIN</p>
+            <button class="enter-btn" onclick="document.getElementById('portals').scrollIntoView({behavior: 'smooth'})">ENTER_SYSTEM</button>
         </div>
-        <div class="scroll-indicator">
-            <span>SCROLL</span>
-            <div class="arrow"></div>
-        </div>
+        <div class="scroll-indicator"><div class="arrow"></div></div>
     </section>
 
-    <!-- Portals Section -->
     <section class="portals-section" id="portals">
         <div class="section-header">
             <div class="section-tag">// SELECT ACCESS PORTAL</div>
             <h2 class="section-title">NAVIGATION MATRIX</h2>
         </div>
-
         <div class="portals-grid">
-            <!-- Portal 1: Identity -->
             <div class="portal-card" data-portal="identity" onclick="openModal('identity')">
                 <div class="portal-index">PORTAL_01</div>
                 <div class="portal-icon">⚡</div>
                 <h3 class="portal-name">IDENTITY</h3>
-                <p class="portal-desc">
-                    Profil technique polyvalent. Autonomie totale. Expertise Active Directory, GPO, Windows Server et administration Linux. Capacité d'adaptation rapide.
-                </p>
-                <div class="portal-action">
-                    <span>ACCESS_DATA</span>
-                    <span class="arrow">→</span>
-                </div>
+                <p class="portal-desc">Profil technique polyvalent. Expertise Active Directory, GPO, Windows Server et administration Linux.</p>
+                <div class="portal-action">ACCESS_DATA →</div>
             </div>
-
-            <!-- Portal 2: MIRA Project -->
             <div class="portal-card" data-portal="mira" onclick="openModal('mira')">
                 <div class="portal-index">PORTAL_02</div>
                 <div class="portal-icon">🛡️</div>
                 <h3 class="portal-name">MIRA_PROJECT</h3>
-                <p class="portal-desc">
-                    Système d'audit réseau Full-Stack. Extraction API FreeboxOS, Whitelist sécurisée, Bot Telegram. Lab réseau multi-sites sous PNETLab.
-                </p>
-                <div class="portal-action">
-                    <span>VIEW_PROJECT</span>
-                    <span class="arrow">→</span>
-                </div>
+                <p class="portal-desc">Système d'audit réseau Full-Stack. Extraction API FreeboxOS, Whitelist sécurisée, Bot Telegram.</p>
+                <div class="portal-action">VIEW_PROJECT →</div>
             </div>
-
-            <!-- Portal 3: Career Path -->
             <div class="portal-card" data-portal="career" onclick="openModal('career')">
                 <div class="portal-index">PORTAL_03</div>
                 <div class="portal-icon">🚀</div>
                 <h3 class="portal-name">CAREER_PATH</h3>
-                <p class="portal-desc">
-                    Recherche alternance 3 ans dès septembre 2026. Profil touche-à-tout : SOC, Audit, Admin, Cloud Security. Vision internationale.
-                </p>
-                <div class="portal-action">
-                    <span>EXPLORE_VISION</span>
-                    <span class="arrow">→</span>
-                </div>
+                <p class="portal-desc">Recherche alternance 3 ans dès septembre 2026. Vision internationale (Suisse).</p>
+                <div class="portal-action">EXPLORE_VISION →</div>
             </div>
-
-            <!-- Portal 4: Passion Logs -->
             <div class="portal-card" data-portal="passion" onclick="openModal('passion')">
                 <div class="portal-index">PORTAL_04</div>
                 <div class="portal-icon">🔥</div>
                 <h3 class="portal-name">PASSION_LOGS</h3>
-                <p class="portal-desc">
-                    Veille IA constante. Discipline MMA pour la résilience. Fan Liverpool FC et Florian Wirtz. Gaming pour la déconnexion.
-                </p>
-                <div class="portal-action">
-                    <span>READ_LOGS</span>
-                    <span class="arrow">→</span>
-                </div>
+                <p class="portal-desc">Veille IA constante. Discipline MMA. Fan de Liverpool FC et Florian Wirtz.</p>
+                <div class="portal-action">READ_LOGS →</div>
             </div>
         </div>
     </section>
 
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-row">
-            <span class="footer-name">ILYAN HACHANI</span> 
-            <span class="footer-divider">|</span>
-            <span class="footer-tagline">Votre Futur Alternant // GUARDIA SCHOOL</span> [cite: 1, 38]
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-row">
+                <span class="footer-name">ILYAN HACHANI</span> 
+                <span class="footer-divider">|</span>
+                <span class="footer-tagline">Votre Futur Alternant // GUARDIA SCHOOL</span> [cite: 1]
+            </div>
+            <div class="footer-row">
+                <a href="mailto:hachani.ilyan5@gmail.com" class="footer-link">hachani.ilyan5@gmail.com</a> 
+                <span class="footer-dot">•</span>
+                <a href="CV-Ilyan-HACHANI.pdf" target="_blank" class="footer-link">Consulter mon CV</a>
+                <span class="footer-dot">•</span>
+                <span class="footer-copy">© 2026 // À très bientôt</span>
+            </div>
         </div>
-        
-        <div class="footer-row">
-            <a href="mailto:hachani.ilyan5@gmail.com" class="footer-link">hachani.ilyan5@gmail.com</a> 
-            <span class="footer-dot">•</span>
-            <a href="CV%20Ilyan.%20HACHANI.pdf" target="_blank" class="footer-link cv-link">Consulter mon CV</a>
-            <span class="footer-dot">•</span>
-            <span class="footer-copy">© 2026 // À très bientôt</span>
-        </div>
-    </div>
-</footer>
-    <!-- Modal Overlay -->
+    </footer>
+
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-        
-        <!-- Identity Modal -->
         <div class="modal-content" data-portal="identity" id="modal-identity">
             <div class="modal-header">
-                <div class="modal-title-group">
-                    <div class="modal-icon">⚡</div>
-                    <h2 class="modal-title">IDENTITY_CORE</h2>
-                </div>
+                <div class="modal-title-group"><div class="modal-icon">⚡</div><h2 class="modal-title">IDENTITY_CORE</h2></div>
                 <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
             </div>
             <div class="modal-body">
                 <div class="content-section">
                     <div class="content-label">// PROFIL</div>
-                    <p class="content-text">
-                        Étudiant à la <strong>Guardia Cybersecurity School</strong>, je suis un défenseur proactif qui ne subit pas la technologie mais la contrôle. Mon autonomie totale et ma persévérance, forgées par la pratique du MMA, me permettent d'identifier des failles et de développer mes propres solutions là où d'autres attendent des consignes.
-                    </p>
+                    <p class="content-text">Étudiant à la <strong>Guardia Cybersecurity School</strong>, je suis un défenseur proactif. Mon autonomie et ma persévérance sont forgées par la pratique du MMA.</p>
                 </div>
-
-                <div class="content-section">
-                    <div class="content-label">// EXPERTISE TECHNIQUE</div>
-                    <div class="skills-grid">
-                        <span class="skill-chip">Active Directory (AD DS)</span>
-                        <span class="skill-chip">GPO Management</span>
-                        <span class="skill-chip">Windows Server</span>
-                        <span class="skill-chip">Linux Administration</span>
-                        <span class="skill-chip">Log Analysis</span>
-                        <span class="skill-chip">Python Scripting</span>
-                        <span class="skill-chip">Network Security</span>
-                        <span class="skill-chip">SIEM</span>
-                        <span class="skill-chip">Firewall Config</span>
-                        <span class="skill-chip">Cisco IOS</span>
-                    </div>
-                </div>
-
                 <div class="content-section">
                     <div class="content-label">// ENVIRONNEMENT LINUX</div>
                     <div class="showcase-card">
-                        <img src="linux-terminal.png" alt="Linux Terminal Environment" class="showcase-image" id="img-linux-env" onerror="this.outerHTML='<div class=\'image-placeholder\'><span class=\'icon\'>🖥️</span><span>linux-terminal.png</span></div>'">
-                            <div class="showcase-title">Terminal Environment</div>
-                            <p class="showcase-desc">Maîtrise complète de l'environnement Linux : administration système, scripting bash, gestion des services, analyse de logs et automatisation des tâches.</p>
-                        </div>
+                        <img src="linux-terminal.png" alt="Terminal" class="showcase-image" onerror="this.src='https://via.placeholder.com/800x400/111620/00f5ff?text=LINUX_TERMINAL'">
+                        <div class="showcase-info"><p class="content-text">Maîtrise complète de l'administration Linux, scripting bash et automatisation.</p></div>
                     </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// APPROCHE</div>
-                    <p class="content-text">
-                        Vision transverse de la sécurité. Capacité d'intervention sur l'ensemble de la chaîne : administration, durcissement, détection, réponse. Montée en compétence rapide sur tout sujet complexe.
-                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- MIRA Modal -->
         <div class="modal-content" data-portal="mira" id="modal-mira">
             <div class="modal-header">
-                <div class="modal-title-group">
-                    <div class="modal-icon">🛡️</div>
-                    <h2 class="modal-title">MIRA_PROJECT</h2>
-                </div>
+                <div class="modal-title-group"><div class="modal-icon">🛡️</div><h2 class="modal-title">MIRA_PROJECT</h2></div>
                 <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
             </div>
             <div class="modal-body">
-                <div class="content-section">
-                    <div class="content-label">// GENÈSE</div>
-                    <p class="content-text">
-                        Face au manque de visibilité sur la sécurité de mon réseau Wi-Fi domestique, j'ai conçu <strong>MIRA</strong> : un outil d'audit et de surveillance en temps réel. Ce projet démontre ma capacité à maîtriser toute la chaîne technique, du développement à la sécurité réseau.
-                    </p>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// PROOF OF CONCEPT</div>
-                    <div class="project-showcase">
-                        <div class="showcase-card">
-                            <img src="mira-dashboard.png" alt="MIRA Dashboard" class="showcase-image" id="img-mira-dashboard" onerror="this.outerHTML='<div class=\'image-placeholder\'><span class=\'icon\'>📊</span><span>mira-dashboard.png</span></div>'">
-                            <div class="showcase-info">
-                                <div class="showcase-title">Network Shield Dashboard v2.0</div>
-                                <p class="showcase-desc">Interface de monitoring temps réel : scan réseau, détection d'appareils inconnus, scoring de risque et trafic réseau.</p>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">Flask</span>
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">REST API</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="showcase-card">
-                            <img src="telegram-alerts.png" alt="Telegram Alerts" class="showcase-image" id="img-telegram-alerts" onerror="this.outerHTML='<div class=\'image-placeholder\'><span class=\'icon\'>📱</span><span>telegram-alerts.png</span></div>'">
-                            <div class="showcase-info">
-                                <div class="showcase-title">Telegram Alerting System</div>
-                                <p class="showcase-desc">Bot Telegram pour alertes instantanées : détection d'intrus, actions Accept/Block en un clic.</p>
-                                <div class="tech-stack">
-                                    <span class="tech-tag">Telegram Bot API</span>
-                                    <span class="tech-tag">Webhook</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// FONCTIONNALITÉS CLÉS</div>
-                    <div class="skills-grid">
-                        <span class="skill-chip">Extraction API FreeboxOS</span>
-                        <span class="skill-chip">Whitelist sécurisée</span>
-                        <span class="skill-chip">Détection d'intrus</span>
-                        <span class="skill-chip">Alerting temps réel</span>
-                        <span class="skill-chip">Dashboard Web</span>
-                        <span class="skill-chip">Risk Scoring</span>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// LAB RÉSEAU</div>
+                <div class="project-showcase">
                     <div class="showcase-card">
-                        <div class="showcase-info">
-                            <div class="showcase-title">Infrastructure Multi-Sites // PNETLab</div>
-                            <p class="showcase-desc">Simulation d'architecture entreprise complète : segmentation VLAN, routage OSPF, haute disponibilité HSRP, filtrage ACL inter-VLAN. Démonstration de la capacité à concevoir et sécuriser des architectures réseau complexes.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">Cisco IOS</span>
-                                <span class="tech-tag">VLAN</span>
-                                <span class="tech-tag">OSPF</span>
-                                <span class="tech-tag">ACL</span>
-                                <span class="tech-tag">HSRP</span>
-                                <span class="tech-tag">PNETLab</span>
-                            </div>
-                        </div>
+                        <img src="mira-dashboard.png" alt="Dashboard" class="showcase-image" onerror="this.src='https://via.placeholder.com/800x400/111620/00ff88?text=MIRA_DASHBOARD'">
+                        <div class="showcase-info"><h4>Dashboard v2.0</h4><p class="content-text">Monitoring temps réel et scan réseau.</p></div>
+                    </div>
+                    <div class="showcase-card">
+                        <img src="telegram-alerts.png" alt="Telegram" class="showcase-image" onerror="this.src='https://via.placeholder.com/800x400/111620/00ff88?text=TELEGRAM_ALERTS'">
+                        <div class="showcase-info"><h4>Bot Telegram</h4><p class="content-text">Alertes d'intrusions instantanées.</p></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Career Modal -->
         <div class="modal-content" data-portal="career" id="modal-career">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <div class="modal-icon">🚀</div>
-                    <h2 class="modal-title">CAREER_PATH</h2>
-                </div>
-                <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
-            </div>
-            <div class="modal-body">
-                <div class="content-section">
-                    <div class="objective-card">
-                        <div class="objective-badge">
-                            <span class="pulse"></span>
-                            RECHERCHE UN CONTRAT D'ALTERNANCE DE 3 ANS // Disponible dès Juillet 2026
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// PÉRIMÈTRE MÉTIER</div>
-                    <p class="content-text" style="margin-bottom: 1rem;">
-                        Profil <strong>touche-à-tout</strong> capable de postuler à toute offre cyber. Ma polyvalence me permet d'appréhender l'intégralité de la chaîne de sécurité.
-                    </p>
-                    <div class="roles-list">
-                        <div class="role-item">Analyste SOC</div>
-                        <div class="role-item">Auditeur Sécurité</div>
-                        <div class="role-item">Administrateur Sécurité</div>
-                        <div class="role-item">Cloud Security Engineer</div>
-                        <div class="role-item">GRC / Conformité</div>
-                        <div class="role-item">Pentester Junior</div>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// SECTEURS CIBLES</div>
-                    <div class="skills-grid">
-                        <span class="skill-chip">Banque & Finance</span>
-                        <span class="skill-chip">Défense & Armée</span>
-                        <span class="skill-chip">Industrie</span>
-                        <span class="skill-chip">Santé</span>
-                        <span class="skill-chip">ESN / SSII</span>
-                        <span class="skill-chip">Cloud Providers</span>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// VISION FUTURE</div>
-                    <p class="content-text">
-                        Ambition tournée vers la <strong>sécurité Cloud</strong> à l'international. La Suisse représente un objectif de carrière à moyen terme. Chaque mission est une opportunité de croissance et de montée en compétence sur des sujets complexes.
-                    </p>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// VALEUR AJOUTÉE</div>
-                    <p class="content-text">
-                        Capacité à appréhender toute la chaîne de valeur de la sécurité. Vision globale des enjeux techniques et organisationnels. Autonomie complète et apprentissage autodidacte permanent.
-                    </p>
-                </div>
-            </div>
+            <div class="modal-header"><h2 class="modal-title">CAREER_PATH</h2><button class="close-btn" onclick="closeModal(event, true)">CLOSE</button></div>
+            <div class="modal-body"><div class="objective-card">RECHERCHE ALTERNANCE // JUILLET 2026</div></div>
         </div>
 
-        <!-- Passion Modal -->
         <div class="modal-content" data-portal="passion" id="modal-passion">
-            <div class="modal-header">
-                <div class="modal-title-group">
-                    <div class="modal-icon">🔥</div>
-                    <h2 class="modal-title">PASSION_LOGS</h2>
-                </div>
-                <button class="close-btn" onclick="closeModal(event, true)">CLOSE_SESSION</button>
-            </div>
-            <div class="modal-body">
-                <div class="content-section">
-                    <div class="content-label">// CENTRES D'INTÉRÊT</div>
-                    <div class="passion-grid">
-                        <div class="passion-item">
-                            <span class="passion-icon">🤖</span>
-                            <div class="passion-content">
-                                <h4>Intelligence Artificielle</h4>
-                                <p>Veille constante sur l'évolution de l'IA. Applications en cybersécurité : détection d'anomalies, threat intelligence automatisée.</p>
-                            </div>
-                        </div>
-                        <div class="passion-item">
-                            <span class="passion-icon">🥊</span>
-                            <div class="passion-content">
-                                <h4>MMA</h4>
-                                <p>Discipline physique et mentale. Gestion du stress, persévérance et analyse tactique. Preuve de résilience.</p>
-                            </div>
-                        </div>
-                        <div class="passion-item">
-                            <span class="passion-icon">🦅</span>
-                            <div class="passion-content">
-                                <h4>Liverpool FC</h4>
-                                <p>You'll Never Walk Alone. Esprit collectif, résilience et passion pour le football de haut niveau.</p>
-                            </div>
-                        </div>
-                        <div class="passion-item">
-                            <span class="passion-icon">⭐</span>
-                            <div class="passion-content">
-                                <h4>Florian Wirtz</h4>
-                                <p>Admiration pour ce talent générationnel. Vision du jeu, technique et intelligence tactique.Un des meilleurs numéro 10 actuel</p>
-                            </div>
-                        </div>
-                        <div class="passion-item">
-                            <span class="passion-icon">🎮</span>
-                            <div class="passion-content">
-                                <h4>Gaming</h4>
-                                <p>Déconnexion nécessaire. Jeux de stratégie et FPS pour maintenir les réflexes et la concentration.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// MENTALITÉ</div>
-                    <p class="content-text">
-                        Chaque nouveau sujet est une opportunité de croissance. Pas de zone de confort. Apprentissage continu et autodidacte. Toujours prêt à relever de nouveaux défis techniques.
-                    </p>
-                </div>
-
-                <div class="content-section">
-                    <div class="content-label">// DISPONIBILITÉ</div>
-                    <p class="content-text">
-                        France entière. Mobilité totale. Télétravail ou présentiel selon les besoins de la mission.
-                    </p>
-                </div>
-            </div>
+            <div class="modal-header"><h2 class="modal-title">PASSION_LOGS</h2><button class="close-btn" onclick="closeModal(event, true)">CLOSE</button></div>
+            <div class="modal-body"><div class="passion-grid"><div class="passion-item">🤖 IA</div><div class="passion-item">🥊 MMA</div><div class="passion-item">⚽ LFC</div></div></div>
         </div>
     </div>
 
     <script>
-        // Particle Canvas Animation
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let animationId;
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize);
+        resize();
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        function createParticles() {
+        function create() {
             particles = [];
-            const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    radius: Math.random() * 1.5 + 0.5,
-                    opacity: Math.random() * 0.5 + 0.1
-                });
-            }
+            for(let i=0; i<100; i++) particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5});
         }
-
-        function drawParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach((particle, i) => {
-                particle.x += particle.vx;
-                particle.y += particle.vy;
-
-                if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-                if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
-
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(0, 245, 255, ${particle.opacity})`;
-                ctx.fill();
-
-                // Draw connections
-                particles.slice(i + 1).forEach(other => {
-                    const dx = particle.x - other.x;
-                    const dy = particle.y - other.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(particle.x, particle.y);
-                        ctx.lineTo(other.x, other.y);
-                        ctx.strokeStyle = `rgba(0, 245, 255, ${0.1 * (1 - distance / 120)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                });
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            particles.forEach(p => {
+                p.x+=p.vx; p.y+=p.vy;
+                if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1;
+                ctx.fillStyle='rgba(0,245,255,0.2)'; ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
             });
-
-            animationId = requestAnimationFrame(drawParticles);
+            requestAnimationFrame(draw);
         }
+        create(); draw();
 
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            createParticles();
-        });
-
-        resizeCanvas();
-        createParticles();
-        drawParticles();
-
-        // Modal Functions
-        let currentModal = null;
-
-        function openModal(portalId) {
-            const overlay = document.getElementById('modal-overlay');
-            const modals = document.querySelectorAll('.modal-content');
-            
-            modals.forEach(modal => modal.style.display = 'none');
-            
-            const targetModal = document.getElementById(`modal-${portalId}`);
-            if (targetModal) {
-                targetModal.style.display = 'block';
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                currentModal = portalId;
-            }
+        function openModal(id) {
+            document.getElementById('modal-overlay').classList.add('active');
+            document.querySelectorAll('.modal-content').forEach(m => m.style.display = 'none');
+            document.getElementById('modal-'+id).style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
-
-        function closeModal(event, forceClose = false) {
-            if (forceClose || event.target.id === 'modal-overlay') {
-                const overlay = document.getElementById('modal-overlay');
-                overlay.classList.remove('active');
+        function closeModal(e, force=false) {
+            if(force || e.target.id === 'modal-overlay') {
+                document.getElementById('modal-overlay').classList.remove('active');
                 document.body.style.overflow = '';
-                currentModal = null;
             }
         }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && currentModal) {
-                closeModal({ target: { id: 'modal-overlay' } });
-            }
-        });
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.portal-card').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = `opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`;
-            observer.observe(card);
-        });
     </script>
 </body>
 </html>
